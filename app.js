@@ -1,5 +1,5 @@
 // import functions and grab DOM elements
-import { renderGame, renderTeam } from './render-utils.js';
+import { renderGame } from './render-utils.js';
 const currentGameEl = document.getElementById('current-game-container');
 const pastGamesEl = document.getElementById('past-games-container');
 
@@ -18,8 +18,9 @@ let name1 = '';
 let name2 = '';
 let score1 = 0;
 let score2 = 0;
+let pastGames = [];
 
-nameFormButton.addEventListener('click', (e) => {
+nameFormButton.addEventListener('click', () => {
     // get the name data from the form
     let name1Input = document.getElementsByName('team-one')[0];
     let name2Input = document.getElementsByName('team-two')[0];
@@ -71,8 +72,15 @@ finishGameButton.addEventListener('click', () => {
     // add the current game to an array of games in state
     // it will be helpful to keep track of these games as objects with 4 properties, one for each piece of state we're tracking
     // for example, make an object like this: { name1: 'ducks', name2: 'bears' ,score1: 1, score2: 2 } 
+    const currentGame = {
+        name1:name1,
+        name2:name2,
+        score1:score1,
+        score2:score2
+    };
     // then push it to your array in state
 
+    pastGames.push(currentGame);
     // (be sure to make a new object. do not declare the object in global scope and mutate it for reuse. This would cause difficult bugs)
     
     displayAllGames();
@@ -111,7 +119,7 @@ function displayAllGames() {
     // use the renderGame function to render and append a past game for each past game in state
     // again, review the renderGame function in render-utils.js. How many arguments does it take? What order does it take them in?
     for (let game of pastGames) {
-        const gamesEl = renderGame();
+        const gamesEl = renderGame(game.name1, game.name2, game.score1, game.score2);
         gamesEl.classList.add('past');
         pastGamesEl.append(gamesEl);
     }
